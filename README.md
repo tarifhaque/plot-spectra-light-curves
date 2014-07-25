@@ -5,9 +5,7 @@ The Dark Energy Survey's supernova (DES-SN) science working group is a geographi
 
 There are a number of different kinds of light curve fitting programs used by the supernova community today. This visualization tool allows for the comparison of spectra and light curve fits side-by-side. The template-based interface enables scientists to compare a target supernova to known supernovae by allowing the user to cycle through visual overlays representing known supernovae and transpose these overlays atop target spectrum or light curves. Our design is sufficiently general that it can support both large spectroscopic data sets and these smaller light curve analyses.
 
-
 ### Functionality
-
 The tool supports two views: (1) a spectrum view and (2) a light curve view. Both views draw from a core functionality of selecting, plotting and comparing fits:
 
 - Scroll through comparison spectra or light curves in the form of visual overlays.
@@ -19,19 +17,15 @@ Spectrum View
 - Apply an on-the-fly moving average transform to the target spectrum.
 - Overlay atomic species on the target spectrum, and apply redshifts (z) and doppler shifts (v) to individual species.
 
-### Implementation
-
+### Libraries
 The tool is dependent on the following JavaScript libraries, which are delivered via CDN:
-- jQuery 
+- jQuery 2.1.1
 - HighCharts
 - Bootstrap 3
 - Select2 3.5.1
 
-OVERLAYS
---------
-A HighCharts series represents a single channel, or error associated with that channel. 
-Primary data and overlays are comprised of one to many channels. Primary data is 
-assumed to be permanently plotted on the chart, whereas overlays may be charted and uncharted.
+### Primary Data Overlays
+Primary data associated with the target spectrum and overlays are comprised of one to many channels.  A HighCharts series represents a single channel, or error associated with that channel. Primary data is assumed to be permanently plotted on the chart, whereas overlays may be charted and uncharted.
 
 The user selects overlays to plot from the select tool. If an overlay is selected, it is kept
 on the chart until the chart is cleared or the overlay is unfavorited. An overlay may be 
@@ -43,8 +37,7 @@ in which the overlay appears in the JSON data. Because an overlay may be compris
 many channels, several HighCharts series may have the same overlay ID; if this is the case, 
 these series belong to the same overlay, and are charted and uncharted simultaneously.   
     
-UNIQUELY IDENTIFYING A SERIES ON THE CHART
--------------------------------------------
+### Uniquely identifying a series on the chart
 All channels must have a unique channel name. Every series plotted on the chart has a unique ID, 
 which is a string concatenation of the following flags: 
 
@@ -62,21 +55,18 @@ for removing specific series from the chart.
 If the series belongs to an overlay, the "overlayid" attribute associated with the series 
 references the overlay number to which the series belongs.
 
-TRANSFORMING DATA CHANNELS
----------------------------
+### Transforming Data Channels
 Only data channels (series) may be transformed. When transformed, a duplicate of the series
 is made, and the transform is applied to the duplicate; the transform duplicate is then plotted 
 to the chart. Only one transform of a data channel may exist at any given time.
 
-DYNAMICALLY GENERATING TRANSFORM UIs
--------------------------------------  
+### Dynamically Generating Transform UIs 
 A UI must be generated for any given transform. Thus, after the user selects a transform, a function 
 is called to populate the UI assoiciated with that transform. For example, generateMovingAverageUI() 
 is called if the user wishes to apply a moving average to data channel(s). 
 
-ATOMIC LINES
-------------
-For now, store atomic lines in a dictionary locally. The atc-lines content defines a line list for 
+### Atomic Lines
+For now, we store atomic lines in a dictionary locally. The atc-lines content defines a line list for 
 each species in a dictionary. The species name is the key, and the value is a list of wavelengths.  
 Thus, each species will has a unique name. For example, the convention used for the neutral hydrogen 
 species is "H I" where 'H' is the atomic symbol of the element and then a Roman numeral, where 'I' 
