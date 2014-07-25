@@ -1,290 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="shortcut icon" href="bootstrap/assets/ico/favicon.ico">
-
-    <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="../../excanvas.min.js"></script><![endif]-->
-    <!-- <script language="javascript" type="text/javascript" src="./flot/jquery.js"></script> -->
-
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    
-    <!-- <script type="text/javascript" src="{{ url_for( 'static', filename = 'jquery-2.1.0.min.js' ) }}"></script> -->
-    <!-- <script type="text/javascript" src="{{ url_for( 'static', filename = 'multiselect/js/jquery.multi-select.js' ) }}"></script> -->
-
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/highcharts-more.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-
-    <!-- <script type="text/javascript" src="{{ url_for( 'static', filename = 'multiselect/js/jquery.multi-select.js' ) }}"></script> -->
-    <!-- <link rel="stylesheet" href="{{ url_for( 'static', filename = 'multiselect/css/multi-select.css' ) }}"> -->
-
-    <!-- <link href="select2/select2.css" rel="stylesheet"/> -->
-    <!-- <script src="select2/select2.js"></script> -->
-    <link href='https://ivaynberg.github.io/select2/select2-master/select2.css' rel='stylesheet'/>
-    <script src='https://ivaynberg.github.io/select2/select2-master/select2.js'></script>
-
-    <!-- Bootstrap core JavaScript -->
-    <!-- <script type="text/javascript" src="{{ url_for( 'static', filename = 'bootstrap/js/bootstrap.min.js' ) }}"></script> -->
-    <!-- <script src="bootstrap/js/bootstrap.min.js"></script> -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-
-    <title>Plot Spectrum</title>
-
-    <!-- Bootstrap core CSS -->
-    <!-- <link rel="stylesheet" href="{{ url_for( 'static', filename = 'bootstrap/css/bootstrap.min.css' ) }}"> ->
-    <!-- <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"> -->
-
-    <!-- Custom styles for this template -->
-    <style>
-
-      body {
-        padding-top: 50px;
-      }
-
-      .starter-template {
-        padding: 40px 15px;
-      }
-
-    </style>
-
-    <!-- Just for debugging purposes. Don't actually copy this line! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-  </head>
-
-  <body>
-
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-
-        <div class="navbar-header">
-          <a class="navbar-brand" href="#">Plot Spectra</a>
-        </div>
-
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="#loadSpectrumModal" role="button" class="btn" data-toggle="modal" data-target="#loadSpectrumModal">Load Data</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-
-      </div>
-    </div>
-
-    <div class="container-fluid">
-
-      <div class="starter-template">
-        <div class="row">
-
-        <div class="col-md-8">
-          <div id="container" style="width:100%; height:100%;"></div>
-        </div>
-        
-        <div class="col-md-4">
-
-          <!-- Nav tabs -->
-        <ul class="nav nav-tabs">
-          <li class="active"><a href="#overlays" data-toggle="tab">Overlays</a></li>
-          <li><a href="#filters" data-toggle="tab">Transforms</a></li>
-          <li><a href="#atomiclines" data-toggle="tab">Atomic Lines</a></li>
-        </ul>
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-
-          <div class="tab-pane fade in active" id="overlays" align="center">
-
-              <p>
-
-              <div class="progress">
-              <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%" id="overlays-progress">
-              </div>
-              </div>
-
-              <p>
-
-              <div class="btn-group btn-group-sm">
-
-                  <button type="button" id="loadMore" onClick="loadMoreOverlays()" data-loading-text="Loading..." class="btn btn-info" data-style="expand-left">
-                  <span class="glyphicon glyphicon-download"></span> <span class="ladda-label"> Load More </span> </button>                  
-                  
-                  <button type="button" onclick="clearAllOverlays()" class="btn btn-success">
-                  <span class="glyphicon glyphicon-remove"></span> Clear </button>
-                  
-                  <button type="button" onclick="generatePermalink()" class="btn btn-warning">
-                  <span class="glyphicon glyphicon-share-alt"></span> Share </button>
-
-                  <button type="button" onclick="unfavoriteOverlay()" class="btn btn-danger"> <span class="glyphicon glyphicon-thumbs-down"></span> Unfavorite</button>
-              </div>
-
-              </p>
-
-                
-                <p id="permalink"></p>
-
-                <div class="row">
-
-                <div class="col-md-6">
-                  <select id="select-left" style="width:100%"> 
-                  <option></option>
-                  </select>
-                </div>
-                
-                <div class="col-md-6">
-                    <span class="label label-primary"> Selected Favorites </span>
-                    <select multiple class="form-control" id="select-favorites"></select>
-                </div>
-                
-                </div>
-
-          </div> <!-- End Overlays Tab Div -->
-
-          <div class="tab-pane fade" id="filters">
-
-            <br>
-            
-            <select id="select-transform" style="width:100%"> 
-                  <option></option>
-                  <option value='moving-average'>Moving Average</option>
-            </select>
-
-            <div id="transform-ui">
-            </div>
-
-          </div>
-
-          <div class="tab-pane fade" id="atomiclines">
-
-            <br>
-            
-            <select multiple id="select-species" style="width:100%"> 
-              <option></option>
-            </select>
-
-            <br>
-
-            <!-- Populate div shift forms for atomic species -->
-            <div class='shift-forms form-group' id='shift-forms'> <br> </div> 
-
-            <center>
-            <div class='btn-group'>  
-              <button type='button' onclick='clearAllSpecies()' class='btn btn-success'>
-              <span class='glyphicon glyphicon-remove'></span> Clear All </button>
-              
-              <button type='button' onclick='plotSelectedSpecies()' class='btn btn-warning'>
-              <span class='glyphicon glyphicon-send'></span> Plot </button> </div> 
-            </div>
-            </center>
-
-
-        </div>
-        </div> <!-- End Responsive Column  -->
-      
-      </div>
-      </div> <!-- End Started Template -->
-      </div> <!-- End Fluid Container -->
-
-      <!-- Load Spectrum Modal -->
-      <div class="modal fade" id="loadSpectrumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title" id="myModalLabel">Load JSON Data</h4>
-            </div>
-
-            <div class="modal-body">
-              <input type="file" id="fileToLoad">
-            </div>
-            
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary" onclick="loadFileAsText()">Load File</button>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /.container -->
-
-    <script type="text/javascript">
-
-    /*
-
-    --------------------
-    IMPLMENTATION NOTES
-    --------------------
-
-    A HighCharts series represents a single channel, or error associated with that channel. 
-    Primary data and overlays are comprised of one to many channels. Primary data is 
-    assumed to be permanently plotted on the chart, whereas overlays may be charted and uncharted.
-
-    OVERLAYS
-    --------
-    The user selects overlays to plot from the select tool. If an overlay is selected, it is kept
-    on the chart until the chart is cleared or the overlay is unfavorited. An overlay may be 
-    comprised of several channels. When the user selects an overlay, all channels associated 
-    with that overlay are plotted.
-
-    Every overlay has a number (ID) associated with it. The overlay number is determined by the order 
-    in which the overlay appears in the JSON data. Because an overlay may be comprised of one to
-    many channels, several HighCharts series may have the same overlay ID; if this is the case, 
-    these series belong to the same overlay, and are charted and uncharted simultaneously.   
-
-    
-    UNIQUELY IDENTIFYING A SERIES ON THE CHART
-    -------------------------------------------
-    All channels must have a unique channel name. Every series plotted on the chart has a unique ID, 
-    which is a string concatenation of the following flags: 
-    
-    "t" + ("d" or "o") + ("s" or "e") + channel name
-    "t" = appended to the beginning of the string if the series is a transform
-    "d" = if the series belongs to primary data
-    "o" = if the series belongs to an overlay
-    "s" = if the series charts a spline curve
-    "e" = if the series charts error associated with the spline
-
-    Thus, a series on the chart may be uniquely identified given these criteria. All channels 
-    must have unique names. Being able to unqiuely identify a series on the chart is important 
-    for removing specific series from the chart. 
-
-    If the series belongs to an overlay, the "overlayid" attribute associated with the series 
-    references the overlay number to which the series belongs.
-    
-    TRANSFORMING DATA CHANNELS
-    ---------------------------
-    Only data channels (series) may be transformed. When transformed, a duplicate of the series
-    is made, and the transform is applied to the duplicate; the transform duplicate is then plotted 
-    to the chart. Only one transform of a data channel may exist at any given time.
-
-    DYNAMICALLY GENERATING TRANSFORM UIs
-    -------------------------------------  
-    A UI must be generated for any given transform. Thus, after the user selects a transform, a function 
-    is called to populate the UI assoiciated with that transform. For example, generateMovingAverageUI() 
-    is called if the user wishes to apply a moving average to data channel(s). 
-
-    */
-
-      /* 
-      For now, store atomic lines in a dictionary locally. The atc-lines content defines a line list for 
-      each species in a dictionary. The species name is the key, and the value is a list of wavelengths.  
-      Thus, each species will has a unique name. For example, the convention used for the neutral hydrogen 
-      species is "H I" where 'H' is the atomic symbol of the element and then a Roman numeral, where 'I' 
-      means neutral, II means singly ionized, III means doubly ionized, etc. There are a limited list of 
-      these species that are provided.
-      */
-
       var atc_lines = {
         "H_I" : [[410, 434, 486, 656], "#FF0000"],
         "Test" : [[300, 325, 520, 300], "#00FF00"]
@@ -323,113 +36,113 @@
         series: []
       };
 
-      /* Display full numbers on axis instead of metric prefixes like "k" */
-      Highcharts.setOptions({
-        lang: {
-          numericSymbols: null
-        }
-      });
-
       var spectrumData;
       var chart;
       var selectedOverlays = [];
       var prevHighlightedOverlay;
       var overlaysPerLoad = 15;
       var overlaysLoaded = 0;
-      var numOverlays;      
+      var numOverlays;
 
-      /* Define some global jQuery attributes for select2 UI elements. */
-      var selectleft = $("#select-left").select2({
-        placeholder: "Select an Overlay",
-        allowClear: true
-      });
+      /* jQuery attributes for select2 UI elements. */
+      var selectleft;
+      var selecttransform;
+      var selectspecies;
 
-      var selecttransform = $("#select-transform").select2({
-        placeholder: "Select a Transform",
-        allowClear: true
-      });
+      function intitializeSelects() {
+        
+        selectleft = $("#select-left").select2({
+          placeholder: "Select an Overlay",
+          allowClear: true
+        });
 
-      var selectspecies = $("#select-species").select2({
-        placeholder: "Select a Species",
-        allowClear: true
-      });
+        selecttransform = $("#select-transform").select2({
+          placeholder: "Select a Transform",
+          allowClear: true
+        });
 
-      /* Event listener: highlighting an overlay. */ 
-      selectleft.on("select2-highlight", 
-        function(e) {
-          if (e.val != prevHighlightedOverlay) {
-            plotHighlightedOverlay(e.val);
+        selectspecies = $("#select-species").select2({
+          placeholder: "Select a Species",
+          allowClear: true
+        });
+
+        /* Event listener: highlighting an overlay. */ 
+        selectleft.on("select2-highlight", 
+          function(e) {
+            if (e.val != prevHighlightedOverlay) {
+              plotHighlightedOverlay(e.val);
+            }
+            prevHighlightedOverlay = e.val;
           }
-          prevHighlightedOverlay = e.val;
-        }
-      );
+        );
 
-      /* Event listener: selecting an overlay. */
-      selectleft.on("select2-selecting", 
-        function(e) {
-          if (!isSelectedOverlay(e.val)) {
-            selectedOverlays.push(e.val);
+        /* Event listener: selecting an overlay. */
+        selectleft.on("select2-selecting", 
+          function(e) {
+            if (!isSelectedOverlay(e.val)) {
+              selectedOverlays.push(e.val);
+              
+              /* Add the selected overlay to the favorites list UI. */
+              var x = document.getElementById("select-favorites");
+              var option = document.createElement("option");
+              option.value = e.val;
+              option.text = e.object.text;
+              x.add(option);
+            }
+          } 
+        );
+
+        /* Event listener for selecting a transform. */
+        selecttransform.on("select2-selecting",
+          function(e) {
+            if (e.val === "moving-average") 
+              generateMovingAverageUI();
+          }
+        );
+
+        /* Event listener for selecting an atomic species. */
+        selectspecies.on("select2-selecting",
+          function(e) {
+            var x = document.getElementById("shift-forms");
+            var speciesName = e.val;
+            var speciesColor = atc_lines[speciesName][1];
             
-            /* Add the selected overlay to the favorites list UI. */
-            var x = document.getElementById("select-favorites");
-            var option = document.createElement("option");
-            option.value = e.val;
-            option.text = e.object.text;
-            x.add(option);
+            /* Form input IDs for shift parameters. */ 
+            var zInputID = "z" + speciesName;
+            var vInputID = "v" + speciesName;
+            
+            /* 
+            Dynamically add form for populating parameters of atomic species shifts. 
+            Intermingling so much HTML in JavaScript is probably awful design... sorry. 
+            */
+
+            var newShiftFormRow = "<div class='row' id=" + speciesName + ">";
+            
+            var label = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
+            var label2 = "<span class='input-group-addon' style='background-color: "  +  speciesColor  + " '> " + speciesName + " </span> </div> </div>"; 
+
+            var zInput = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
+            var zInput2 = "<span class='input-group-addon'>Z</span> <input id='" + zInputID + "' type='number' class='form-control' value='0'> </div> </div>"; 
+            
+            var vInput = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
+            var vInput2 = "<span class='input-group-addon'>V</span> <input id='" + vInputID + "' type='number' class='form-control' value='0'> </div> </div>";
+            var endShiftFormRow = "</div>";
+            
+            x.innerHTML = x.innerHTML + newShiftFormRow + label + label2 + zInput + zInput2 + vInput + vInput2 + endShiftFormRow;
           }
-        } 
-      );
+        );
 
-      /* Event listener for selecting a transform. */
-      selecttransform.on("select2-selecting",
-        function(e) {
-          if (e.val === "moving-average") 
-            generateMovingAverageUI();
-        }
-      );
-
-      /* Event listener for selecting an atomic species. */
-      selectspecies.on("select2-selecting",
-        function(e) {
-          var x = document.getElementById("shift-forms");
-          var speciesName = e.val;
-          var speciesColor = atc_lines[speciesName][1];
-          
-          /* Form input IDs for shift parameters. */ 
-          var zInputID = "z" + speciesName;
-          var vInputID = "v" + speciesName;
-          
-          /* 
-          Dynamically add form for populating parameters of atomic species shifts. 
-          Intermingling so much HTML in JavaScript is probably awful design... sorry. 
-          */
-
-          var newShiftFormRow = "<div class='row' id=" + speciesName + ">";
-          
-          var label = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
-          var label2 = "<span class='input-group-addon' style='background-color: "  +  speciesColor  + " '> " + speciesName + " </span> </div> </div>"; 
-
-          var zInput = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
-          var zInput2 = "<span class='input-group-addon'>Z</span> <input id='" + zInputID + "' type='number' class='form-control' value='0'> </div> </div>"; 
-          
-          var vInput = "<div class='col-sm-4'> <div class='input-group input-group-sm'>";
-          var vInput2 = "<span class='input-group-addon'>V</span> <input id='" + vInputID + "' type='number' class='form-control' value='0'> </div> </div>";
-          var endShiftFormRow = "</div>";
-          
-          x.innerHTML = x.innerHTML + newShiftFormRow + label + label2 + zInput + zInput2 + vInput + vInput2 + endShiftFormRow;
-        }
-      );
-
-      /* Event listener for removing an atomic species. */
-      selectspecies.on("select2-removed",
-        function(e) {
-          var speciesName = e.val;
-          var speciesShiftForm = document.getElementById(speciesName);
-          if (speciesShiftForm != null) {
-            speciesShiftForm.parentNode.removeChild(speciesShiftForm);
+        /* Event listener for removing an atomic species. */
+        selectspecies.on("select2-removed",
+          function(e) {
+            var speciesName = e.val;
+            var speciesShiftForm = document.getElementById(speciesName);
+            if (speciesShiftForm != null) {
+              speciesShiftForm.parentNode.removeChild(speciesShiftForm);
+            }
           }
-        }
-      );
+        );
+      }      
 
       /* Generates the Moving Average UI. */
       function generateMovingAverageUI() {
@@ -949,9 +662,15 @@
         $('#container').highcharts(chartData);
         chart = $('#container').highcharts();
         plotData(spectrumData.data);
+      }
+
+      function setupChart() {
+        /* Display full numbers on axis instead of metric prefixes like "k" */
+        Highcharts.setOptions({
+          lang: {
+            numericSymbols: null
+          }
+        });
+
+        intitializeSelects();
       }  
-
-    </script>
-
-  </body>
-</html>
