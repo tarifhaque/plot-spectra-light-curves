@@ -1,7 +1,8 @@
 /*
+PLOT SPECTRA and LIGHT CURVES
+VISULIZATION MODULE
 
-VISULIZATION MODULE IMPLEMENTATION NOTES
-(2014) Tarif Haque, Rollin Thomas, Sarah Poon
+(2014) Tarif Haque
 Lawrence Berkeley National Laboratory 
 
 # Primary Data Overlays

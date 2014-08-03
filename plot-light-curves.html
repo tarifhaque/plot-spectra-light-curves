@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+
+    <!-- Core jQuery library delivered via CDN -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    
+    <!-- Core HighCharts libraries delivered via CDN -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/highcharts-more.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+    <!-- Core Select2 Libraries delivered via CDN -->
+    <link href='https://ivaynberg.github.io/select2/select2-master/select2.css' rel='stylesheet'/>
+    <script src='https://ivaynberg.github.io/select2/select2-master/select2.js'></script>
+
+    <!-- Bootstrap core libraries delivered via CDN -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+
+    <title>Plot Spectrum</title>
+
+    <style>
+
+      body {
+        padding-top: 50px;
+      }
+
+      .starter-template {
+        padding: 40px 15px;
+      }
+
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Light Curve View</a>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container-fluid">
+
+      <div class="starter-template">
+        <div class="row">
+
+        <div class="col-md-8">
+          <div id="container" style="width:100%; height:100%;"></div>
+        </div>
+
+        <div class="col-md-4">
+
+          <!-- Nav tabs -->
+        <ul class="nav nav-tabs">
+          <li class="active"><a href="#overlays" data-toggle="tab">Overlays</a></li>
+        </ul>
+
+        <!-- Tab panes -->
+        <div class="tab-content">
+
+          <div class="tab-pane fade in active" id="overlays" align="center">
+
+              <br>
+
+              <div class="btn-group btn-group-sm">
+
+                  <button type="button" class="btn btn-info" data-toggle="modal" 
+                    data-target="#loadSpectrumModal">
+                  <span class="glyphicon glyphicon-download"> </span> Load File </button>              
+                  
+                  <button type="button" onclick="clearAllOverlays()" class="btn btn-success">
+                  <span class="glyphicon glyphicon-remove"></span> Clear </button>
+                  
+                  <button type="button" onclick="generatePermalink()" class="btn btn-warning">
+                  <span class="glyphicon glyphicon-share-alt"></span> Share </button>
+
+                  <button type="button" onclick="unfavoriteOverlay()" class="btn btn-danger"> <span class="glyphicon glyphicon-thumbs-down"></span> Unfavorite </button>
+              </div>
+
+              </p>
+
+                
+                <p id="permalink"></p>
+
+                <div class="row">
+
+                <div class="col-md-6">
+                  <select id="select-left" style="width:100%"> 
+                  <option></option>
+                  </select>
+                </div>
+                
+                <div class="col-md-6">
+                    <span class="label label-primary"> Selected Favorites </span>
+                    <select multiple class="form-control" id="select-favorites"></select>
+                </div>
+                
+                </div>
+
+          </div> <!-- End Overlays Tab Div -->
+
+          <div class="tab-pane fade" id="filters">
+
+            <br>
+            
+            <select id="select-transform" style="width:100%"> 
+                  <option></option>
+                  <option value='moving-average'>Moving Average</option>
+            </select>
+
+            <div id="transform-ui">
+            </div>
+
+          </div>
+
+          <div class="tab-pane fade" id="atomiclines">
+
+            <br>
+            
+            <select multiple id="select-species" style="width:100%"> 
+              <option></option>
+            </select>
+
+            <br>
+
+            <!-- Populate div shift forms for atomic species -->
+            <div class='shift-forms form-group' id='shift-forms'> <br> </div> 
+
+            <center>
+            <div class='btn-group'>  
+              <button type='button' onclick='clearAllSpecies()' class='btn btn-success'>
+              <span class='glyphicon glyphicon-remove'></span> Clear All </button>
+              
+              <button type='button' onclick='plotSelectedSpecies()' class='btn btn-warning'>
+              <span class='glyphicon glyphicon-send'></span> Plot </button> </div> 
+            </div>
+            </center>
+
+
+        </div>
+        </div> <!-- End Responsive Column  -->
+      
+      </div>
+      </div> <!-- End Started Template -->
+      </div> <!-- End Fluid Container -->
+
+      <!-- Load Spectrum Modal -->
+      <div class="modal fade" id="loadSpectrumModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h4 class="modal-title" id="myModalLabel">Load JSON Spectra Data from File</h4>
+            </div>
+
+            <div class="modal-body">
+              <input type="file" id="fileToLoad">
+            </div>
+            
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" onclick="loadFileAsText()">Load File</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.container -->
+
+    <!-- Visualization Module -->
+    <script src="vis-module.js"></script>
+
+    <script type="javascript">
+      setupChart();
+    </script>
+
+  </body>
+</html>
