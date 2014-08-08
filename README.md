@@ -1,7 +1,7 @@
 # Plot Spectra and Light Curves
 ### A Visual Analytics Tool for and Comparing Supernova Spectra and Light Curves
 
-![Spectra View Screenshot](https://github.com/tarifhaque/plot-spectra-light-curves/blob/master/plot-spectra.jpg)
+![Spectra View Screenshot](https://github.com/tarifhaque/plot-spectra-light-curves/blob/master/plot-spectra.png)
 
 The Dark Energy Survey's supernova (DES-SN) science working group is a geographically-dispersed team of scientists who use observations of distant Type Ia supernovae (SNe) to understand the origin of the accelerating expansion of our universe and to uncover the nature of Dark Energy. DES-SN uses a globally-distributed collection of telescopes, including the world's largest telescopes, to gather spectroscopic follow-up observations. These observations are used to classify the supernovae, measure their redshifts, and extract information to be used to control systematic errors in cosmological inferences. Supernova candidates are chosen for follow-up after analysis and review of fits to light curves, which are represented as time-series measurements of fluxes from DES imaging data.
 
