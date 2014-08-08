@@ -84,7 +84,7 @@
                   <button type="button" onclick="clearAllOverlays()" class="btn btn-success">
                   <span class="glyphicon glyphicon-remove"></span> Clear </button>
                   
-                  <button type="button" onclick="generatePermalink()" class="btn btn-warning">
+                  <button type="button" onclick="displayPermalinkSummary()" class="btn btn-warning">
                   <span class="glyphicon glyphicon-share-alt"></span> Share </button>
 
                   <button type="button" onclick="unfavoriteOverlay()" class="btn btn-danger"> <span class="glyphicon glyphicon-thumbs-down"></span> Unfavorite </button>
@@ -93,7 +93,6 @@
               </p>
 
                 
-                <p id="permalink"></p>
 
                 <div class="row">
 
@@ -109,6 +108,8 @@
                 </div>
                 
                 </div>
+
+                <div class="row" id="permalink"></div>
 
           </div> <!-- End Overlays Tab Div -->
 
@@ -183,10 +184,6 @@
 
     <!-- Visualization Module -->
     <script src="vis-module.js"></script>
-
-    <script type="javascript">
-      setupChart();
-    </script>
 
   </body>
 </html>

@@ -1,12 +1,38 @@
 /*
-PLOT SPECTRA and LIGHT CURVES
-VISULIZATION MODULE
 
-(2014) Tarif Haque
-Lawrence Berkeley National Laboratory 
+PLOT SPECTRA and LIGHT CURVES
+vis-module.js
+
+----------------------------------------------------------------------------
+The MIT License (MIT)
+
+Copyright (c) 2014 - Tarif Haque, Rollin Thomas, Sarah Poon 
+Lawrence Berkeley National Laboratory
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+----------------------------------------------------------------------------
 
 # Primary Data Overlays
-Primary data associated with the target spectrum and overlays are comprised of one to many channels.  A HighCharts series represents a single channel, or error associated with that channel. Primary data is assumed to be permanently plotted on the chart, whereas overlays may be charted and uncharted.
+Primary data associated with the target spectrum and overlays are comprised of 
+one to many channels.  A HighCharts series represents a single channel, or 
+error associated with that channel. Primary data is assumed to be permanently 
+plotted on the chart, whereas overlays may be charted and uncharted.
 
 The user selects overlays to plot from the select tool. If an overlay is selected, it is kept
 on the chart until the chart is cleared or the overlay is unfavorited. An overlay may be 
@@ -482,7 +508,12 @@ these species that are provided.
     }
 
     function generatePermalink() {
-      document.getElementById("permalink").innerHTML = "<br> Display permalink here! <br>";
+      document.getElementById("permalink").innerHTML = "<br> Summarize chart here. <br>";
+    }
+
+    function displayPermalinkSummary() {
+      var overlaysList = selectedOverlays.toString();
+      document.getElementById("permalink").innerHTML = "<br> Overlays selected: [" + overlaysList + "]<br>";
     }
 
     /* Called after the user highlights an overlay to plot. */
